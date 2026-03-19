@@ -1,0 +1,103 @@
+set_location_assignment PIN_B14 -to clock50
+
+set_location_assignment PIN_AE19 -to rgb[23]
+set_location_assignment PIN_AD19 -to rgb[22]
+set_location_assignment PIN_AC19 -to rgb[21]
+set_location_assignment PIN_AF18 -to rgb[20]
+set_location_assignment PIN_AE18 -to rgb[19]
+set_location_assignment PIN_AC18 -to rgb[18]
+set_location_assignment PIN_AD16 -to rgb[17]
+set_location_assignment PIN_AE15 -to rgb[16]
+set_location_assignment PIN_AD21 -to rgb[15]
+set_location_assignment PIN_AF23 -to rgb[14]
+set_location_assignment PIN_AF22 -to rgb[13]
+set_location_assignment PIN_AE21 -to rgb[12]
+set_location_assignment PIN_AF21 -to rgb[11]
+set_location_assignment PIN_AF19 -to rgb[10]
+set_location_assignment PIN_AD17 -to rgb[9]
+set_location_assignment PIN_AF16 -to rgb[8]
+set_location_assignment PIN_AF24 -to rgb[7]
+set_location_assignment PIN_AC21 -to rgb[6]
+set_location_assignment PIN_AE23 -to rgb[5]
+set_location_assignment PIN_AE22 -to rgb[4]
+set_location_assignment PIN_AD20 -to rgb[3]
+set_location_assignment PIN_AF20 -to rgb[2]
+set_location_assignment PIN_AF15 -to rgb[1]
+set_location_assignment PIN_AC16 -to rgb[0]
+
+set_location_assignment PIN_AD18 -to sync[1]
+set_location_assignment PIN_AE17 -to sync[0]
+
+set_location_assignment PIN_C21 -to tape
+
+set_location_assignment PIN_AC15 -to i2sCk
+set_location_assignment PIN_AD15 -to i2sWs
+set_location_assignment PIN_AE14 -to i2sQ
+
+set_location_assignment PIN_AD4 -to joyCk
+set_location_assignment PIN_AC4 -to joyLd
+#set_location_assignment PIN_A19 -to joyS
+set_location_assignment PIN_AD3 -to joyD
+
+set_location_assignment PIN_AF4 -to mbjoyCk
+set_location_assignment PIN_AE3 -to mbjoyLd
+set_location_assignment PIN_AF5 -to mbjoyQ
+
+set_location_assignment PIN_AF11 -to spiCk
+set_location_assignment PIN_AD14 -to spiSs1
+set_location_assignment PIN_AC10 -to spiSs2
+set_location_assignment PIN_AD10 -to spiSs3
+set_location_assignment PIN_AF12 -to spiMosi
+set_location_assignment PIN_AC14 -to spiMiso
+
+# set_location_assignment PIN_E22 -to dramCk
+# set_location_assignment PIN_K24 -to dramCe
+# set_location_assignment PIN_H26 -to dramCs
+# set_location_assignment PIN_G25 -to dramWe
+# set_location_assignment PIN_H25 -to dramRas
+# set_location_assignment PIN_G26 -to dramCas
+# set_location_assignment PIN_H24 -to dramDQM[1]
+# set_location_assignment PIN_F26 -to dramDQM[0]
+# set_location_assignment PIN_C24 -to dramDQ[15]
+# set_location_assignment PIN_D24 -to dramDQ[14]
+# set_location_assignment PIN_E24 -to dramDQ[13]
+# set_location_assignment PIN_F23 -to dramDQ[12]
+# set_location_assignment PIN_F24 -to dramDQ[11]
+# set_location_assignment PIN_G22 -to dramDQ[10]
+# set_location_assignment PIN_G24 -to dramDQ[9]
+# set_location_assignment PIN_H23 -to dramDQ[8]
+# set_location_assignment PIN_E26 -to dramDQ[7]
+# set_location_assignment PIN_E25 -to dramDQ[6]
+# set_location_assignment PIN_D26 -to dramDQ[5]
+# set_location_assignment PIN_D25 -to dramDQ[4]
+# set_location_assignment PIN_C26 -to dramDQ[3]
+# set_location_assignment PIN_C25 -to dramDQ[2]
+# set_location_assignment PIN_B26 -to dramDQ[1]
+# set_location_assignment PIN_B25 -to dramDQ[0]
+# set_location_assignment PIN_J25 -to dramBA[0]
+# set_location_assignment PIN_J26 -to dramBA[1]
+# set_location_assignment PIN_K23 -to dramA[12]
+# set_location_assignment PIN_L24 -to dramA[11]
+# set_location_assignment PIN_K26 -to dramA[10]
+# set_location_assignment PIN_L23 -to dramA[9]
+# set_location_assignment PIN_M24 -to dramA[8]
+# set_location_assignment PIN_M22 -to dramA[7]
+# set_location_assignment PIN_N24 -to dramA[6]
+# set_location_assignment PIN_N23 -to dramA[5]
+# set_location_assignment PIN_N22 -to dramA[4]
+# set_location_assignment PIN_M26 -to dramA[3]
+# set_location_assignment PIN_M25 -to dramA[2]
+# set_location_assignment PIN_L26 -to dramA[1]
+# set_location_assignment PIN_L25 -to dramA[0]
+
+set_location_assignment PIN_A24 -to led[1]
+set_location_assignment PIN_A25 -to led[0]
+
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to rgb*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to sync*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to i2s*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to spi*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to joy*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to mbjoy*
+# set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dram*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to led*
