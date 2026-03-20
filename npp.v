@@ -5,6 +5,8 @@ module npp
 (
 	input  wire       clock50,
 
+	output wire[ 1:0] led,
+
 	output wire[23:0] rgb,
 	output wire[ 1:0] sync,
 
@@ -22,25 +24,23 @@ module npp
 	input  wire       mbjoyLd,
 	output wire       mbjoyQ,
 
+	output wire       dramCk,
+	output wire       dramCe,
+	output wire       dramCs,
+	output wire       dramWe,
+	output wire       dramRas,
+	output wire       dramCas,
+	output wire[ 1:0] dramDQM,
+	inout  wire[15:0] dramDQ,
+	output wire[ 1:0] dramBA,
+	output wire[12:0] dramA,
+
 	input  wire       spiCk,
 	input  wire       spiSs1,
 	input  wire       spiSs2,
 	input  wire       spiSs3,
 	input  wire       spiMosi,
-	output wire       spiMiso,
-
-	output wire[ 1:0] led
-
-	// output wire       dramCk,
-	// output wire       dramCe,
-	// output wire       dramCs,
-	// output wire       dramWe,
-	// output wire       dramRas,
-	// output wire       dramCas,
-	// output wire[ 1:0] dramDQM,
-	// inout  wire[15:0] dramDQ,
-	// output wire[ 1:0] dramBA,
-	// output wire[11:0] dramA,
+	output wire       spiMiso
 );
 //--- clock ---------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ module npp
 
 	wire ne3M5 = ce[3:0] == 15;
 	wire pe3M5 = ce[3:0] == 7;
-	
+
 //--- mist ----------------------------------------------------------------------------------------
 
 	wire r;
@@ -127,12 +127,12 @@ module npp
 		.mbtns  (mbtns  ),
 		.xaxis  (xaxis  ),
 		.yaxis  (yaxis  ),
-		.romIo  (romIo  ),   
-		.tzxIo  (tzxIo  ),   
-		.dioSz  (dioSz  ),   
-		.dioA   (dioA   ),  
-		.dioD   (dioD   ),  
-		.dioW   (dioW   ),  
+		.romIo  (romIo  ),
+		.tzxIo  (tzxIo  ),
+		.dioSz  (dioSz  ),
+		.dioA   (dioA   ),
+		.dioD   (dioD   ),
+		.dioW   (dioW   ),
 		.sdcCs  (sdcCs  ),
 		.sdcCk  (sdcCk  ),
 		.sdcMosi(sdcMosi),
@@ -148,7 +148,7 @@ module npp
 	wire[15:0] rmix = { 1'd0, right }+{ 4'd0, {12{ !status[5] && ear}} };
 
 	i2s i2s(clock50, lmix, rmix, i2sCk, i2sWs, i2sQ);
-	
+
 //--- keyboard ------------------------------------------------------------------------------------
 
 	wire      strb;
@@ -167,18 +167,14 @@ module npp
 
 //--- memory --------------------------------------------------------------------------------------
 
-	wire ready = 1'b1;
-	wire mreq;
-	wire rfsh;
-
 	wire[13:0] a1;
 	wire[ 7:0] q1;
 
 	wire[18:0] a2;
 	wire[ 7:0] d2;
-	wire[ 7:0] q2 = a2[18:17] ? memQ : romQ;
-	wire w2;
-	wire r2;
+	wire[ 7:0] q2 = sdrQ[7:0]; // a2[18:17] ? memQ : romQ;
+	wire       r2;
+	wire       w2;
 
 	reg[2:0] romMap;
 	always @(*) case(a2[16:14])
@@ -188,50 +184,29 @@ module npp
 		 3'b100: romMap = 3'd3; // esxdos
 	endcase
 
-	wire[7:0] romQ;
-	ram #(64) rom(clock, romIo ? dioA[15:0] : { romMap[1:0], a2[13:0] }, dioD, romQ, romIo && dioW);
+	// wire[7:0] romQ;
+	// ram #(64) rom(clock, romIo ? dioA[15:0] : { romMap[1:0], a2[13:0] }, dioD, romQ, romIo && dioW);
 
-	dprs #(16) dpr(clock, a1, q1, clock, { a2[15], a2[12:0] }, d2, !mreq && !w2 && a2[18:17] == 2 && a2[16] && a2[14] && !a2[13]);
+	// wire[7:0] memQ;
+	// ram #(256) mem(clock, a2[17:0], d2, memQ, !mreq && !w2 && a2[18:17]);
 
-	wire[7:0] memQ;
-	ram #(256) mem(clock, a2[17:0], d2, memQ, !mreq && !w2 && a2[18:17]);
+	dprs #(16) dpr(clock, a1, q1, clock, { a2[15], a2[12:0] }, d2, w2 && a2[18:17] == 2 && a2[16] && a2[14] && !a2[13]);
 
-	/*
-	wire[7:0] dprQ;
-	dprf #(384) dpr
-	(
-		clock,
-		{ 2'd2, 1'b1, a1[13], 2'b10, a1[12:0] },
-		q1,
-		clock,
-		romIo ? dioA[18:0] : { a2[18:17], a2[18:17] == 0 ? romMap : a2[16:14], a2[13:0] },
-		romIo ? dioD : d2,
-		q2,
-		romIo ? dioW : !mreq && !w2 && a2[18:17] != 0
-	);
-	*/
-
-/*
-	wire mreq;
+	wire ready;
 	wire rfsh;
 
-	wire romIo = dioEn && dioIx[5:0] == 0;
-
-	reg r2p = 1'b1;
+	reg r2p = 0;
 	always @(posedge clock) if(pe3M5) r2p <= r2;
 
-	dprs #(16) drp(clock, a1, q1, clock, { a2[15], a2[12:0] }, d2, w1);
-
-	wire[21:0] sdrA = romIo ? dioA[21:0] : { 3'd0, a2 };
-	wire[15:0] sdrD = { 8'hFF, romIo ? dioD : d2 };
+	wire[23:0] sdrA  = { 5'd0, romIo ? dioA[18:0] : a2[18:17] == 0 ? { 2'd0, romMap, a2[13:0] } : a2 };
+	wire[15:0] sdrD =  { 8'hFF, romIo ? dioD : d2 };
 	wire[15:0] sdrQ;
-	wire       sdrR = !mreq && !r2p;
-	wire       sdrW = romIo ? dioW : !mreq && !w2 && a2[18:17];
+	wire       sdrR = r2p;
+	wire       sdrW = romIo ? dioW : w2 && a2[18:17] != 0;
 
 	sdram sdram
 	(
 		.clock  (clock  ),
-		.reset  (power  ),
 		.ready  (ready  ),
 		.rfsh   (rfsh   ),
 		.a      (sdrA   ),
@@ -239,10 +214,11 @@ module npp
 		.q      (sdrQ   ),
 		.rd     (sdrR   ),
 		.wr     (sdrW   ),
+		.dramCe (dramCe ),
 		.dramCs (dramCs ),
+		.dramWe (dramWe ),
 		.dramRas(dramRas),
 		.dramCas(dramCas),
-		.dramWe (dramWe ),
 		.dramDQM(dramDQM),
 		.dramDQ (dramDQ ),
 		.dramBA (dramBA ),
@@ -250,12 +226,10 @@ module npp
 	);
 
 	assign dramCk = clock;
-	assign dramCe = 1'b1;
-*/
 
 //--- tzx -----------------------------------------------------------------------------------------
 
-	localparam TK = 256;
+	localparam TK = 512;
 	localparam TW = $clog2(TK*1024);
 
 	reg[TW-1:0] tzxSize;
@@ -306,7 +280,6 @@ module npp
 		.ne3M5  (ne3M5  ),
 		.pe3M5  (pe3M5  ),
 		.reset  (reset  ),
-		.mreq   (mreq   ),
 		.rfsh   (rfsh   ),
 		.nmi    (nmi    ),
 		.a1     (a1     ),
