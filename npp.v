@@ -120,6 +120,8 @@ module npp
 		.vsync  (vsync  ),
 		.rgb    (rgb    ),
 		.sync   (sync   ),
+		.midiQ  (8'd0   ),
+		.midiS  (1'd0   ),
 		.ps2kCk (ps2kCk ),
 		.ps2kD  (ps2kD  ),
 		.joy1   (joy1   ),
@@ -202,7 +204,7 @@ module npp
 	wire[15:0] sdrD =  { 8'hFF, romIo ? dioD : d2 };
 	wire[15:0] sdrQ;
 	wire       sdrR = r2p;
-	wire       sdrW = romIo ? dioW : w2 && a2[18:17] != 0;
+	wire       sdrW = romIo ? dioW : w2;
 
 	sdram sdram
 	(
