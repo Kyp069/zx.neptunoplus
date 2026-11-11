@@ -37,6 +37,11 @@ set_location_assignment PIN_AC15 -to i2sCk
 set_location_assignment PIN_AD15 -to i2sWs
 set_location_assignment PIN_AE14 -to i2sQ
 
+set_location_assignment PIN_AE5 -to midi
+set_location_assignment PIN_AE6 -to midiCk
+set_location_assignment PIN_AF6 -to midiWs
+set_location_assignment PIN_AE7 -to midiD
+
 set_location_assignment PIN_AD4 -to joyCk
 set_location_assignment PIN_AC4 -to joyLd
 #set_location_assignment PIN_A19 -to joyS
@@ -93,11 +98,12 @@ set_location_assignment PIN_M25 -to dramA[2]
 set_location_assignment PIN_L26 -to dramA[1]
 set_location_assignment PIN_L25 -to dramA[0]
 
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to led*
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to rgb*
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to sync*
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to i2s*
-set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to spi*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to midi
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to joy*
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to mbjoy*
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dram*
-set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to led*
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to spi*

@@ -91,8 +91,13 @@ set_global_assignment -name VERILOG_FILE zx/mapper.v
 set_global_assignment -name VERILOG_FILE zx/matrix.v
 set_global_assignment -name VERILOG_FILE zx/turbosound.v
 set_global_assignment -name VERILOG_FILE zx/scandoubler.v
+set_global_assignment -name VERILOG_FILE zx/tape_sd.v
+set_global_assignment -name VERILOG_FILE zx/pzx_player.v
+set_global_assignment -name VERILOG_FILE zx/tap_player.v
+set_global_assignment -name SYSTEMVERILOG_FILE zx/serial_packer.sv
 set_global_assignment -name VHDL_FILE zx/tzxplayer.vhd
 set_global_assignment -name QIP_FILE zx/T80/T80.qip
+
 set_global_assignment -name VERILOG_FILE mist/osd.v
 set_global_assignment -name VERILOG_FILE mist/sd_card.v
 set_global_assignment -name VERILOG_FILE mist/data_io.v
